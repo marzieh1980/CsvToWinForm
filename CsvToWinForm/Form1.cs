@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using CsvHelper;
 using System.IO;
 
 
@@ -15,21 +10,22 @@ namespace CsvToWinForm
 {
     public partial class Form1 : Form
     {
+        private int tcntExceedTemp;
+
         public Form1()
         {
             InitializeComponent();
         }
 
-        
+        // import file csv already browse
         private void btnImport_click_Click(object sender, EventArgs e)
         {
-            dataGridView1.DataSource = LoadCSV(textBox1.Text);
+            dataGridView1.DataSource = LoadCSV(textBox1.Text);          
         }
 
-        public List<ColumnsClass>LoadCSV(string csvFile)
+        // gain values of csv
+        public List<ColumnsClass> LoadCSV(string csvFile)
         {
-        // OpenFileDialog.Filter = "CSVFile(*.csv)|*.csv";           //To check csv ????
-
             var query = from l in File.ReadLines(csvFile)
                         let data = l.Split(';')
                         select new ColumnsClass
@@ -45,18 +41,19 @@ namespace CsvToWinForm
                             MediaTemperature = double.Parse(data[8]),
                             ControlloTemperature = data[9]
                         };
-
             return query.ToList();
         }
 
+        // browse for the file which have to be a .CSV file
         private void btnBrowse_Click(object sender, EventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = "CSVFile(*.csv)|*.csv";          
             dlg.ShowDialog();
             textBox1.Text = dlg.FileName;
         }
 
-       
+        // export again the file on a .csv file
         private void btnExport_Click(object sender, EventArgs e)
         {
             {
@@ -88,7 +85,7 @@ namespace CsvToWinForm
                         //add new line
                         csv += "\r\n";
                     }
-                    //Exporting to csv 
+                    //define the path, where we will put the file
                     string folderPath = "C:\\CSV_FORM\\";
                     
                     File.WriteAllText(folderPath + "ExportedTemp.csv", csv);
@@ -101,6 +98,7 @@ namespace CsvToWinForm
             }
         }
 
+        // insert new record(temperature) , save into the source 
         private void btnSaveRec_Click(object sender, EventArgs e)
         {
             string allData = "";
@@ -110,37 +108,86 @@ namespace CsvToWinForm
                 // Read line by line  
                 while ((line = reader.ReadLine()) != null)
                 {
-                    allData += line + "\r\n";
+                    allData += line + "\r\n";       // after read ever line add it to string and go to next line for next read 
                 }
             }
 
             String newRecord = textBox2.Text+";"+textBox3.Text+";"+textBox4.Text+";"+textBox5.Text+";"+textBox6.Text+";"+textBox7.Text+";"+textBox8.Text+";"+textBox9.Text+";"+textBox10.Text+";";
+           
             string radioV = "";
             bool isChecked = radioBtn1.Checked;
             if (isChecked)
-                radioV = radioBtn1.Text;
+                radioV = radioBtn1.Text;        // if checked is true ==>  put OK
             else
                 radioV = radioBtn2.Text;
+
+            // check if the exceed tem has value more than 4
+            if (tcntExceedTemp > 4)
+            {
+                radioV = radioBtn2.Text;
+            }
+                radioV = radioBtn1.Text;
 
             allData += newRecord;
             allData += radioV;
 
-            System.IO.StreamWriter file = new System.IO.StreamWriter(@"C:\CSV_FORM\template_noHeader.csv");
-            file.WriteLine(allData);
            
+
+            StreamWriter file = new StreamWriter(@"C:\CSV_FORM\template_noHeader.csv");
+            file.WriteLine(allData);
             file.Close();
-            //dataGridView1.Update();
+            dataGridView1.Update();          // refresh the datagrid
             //dataGridView1.Refresh();
         }
 
+        // control the input of new inserted value for temperature
         private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
-        {
+        { 
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
             {
                 e.Handled = true;
                 DialogResult dt = MessageBox.Show("please insert only Number!");
             }
+
         }
+
+        private void textBox2_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            int cntExceedTemp = 0;
+            TextBox tb = sender as TextBox;
+            if (tb != null)
+            {
+                int i;
+                if (int.TryParse(tb.Text, out i))
+                {
+                    if (i >= 90 && i <= 120)
+                        return;
+                }
+            }
+            MessageBox.Show("Temperture non è in range definito, sei sicuro di voler confermare?");
+            cntExceedTemp += 1;    // check the time of exceed temp- every the temp is more than range add 1 to count 
+        }
+
+        // control the value inserted should be between 90 & 120
+
+        //private void checkValueTemp_TextChanged(object sender, EventArgs e)
+        //{
+        //    int value;
+
+        //    if (int.TryParse(textBox2.Text, out value))
+        //    {
+        //        if ((value < 90 || value > 120))
+        //        {
+        //            MessageBox.Show("Temperture non è in range definito, sei sicuro di confermare! ");
+        //        }
+        //        else
+        //        {
+        //            MessageBox.Show("");
+        //        }
+
+        //    }
+        //}
     }
 
 }
+
