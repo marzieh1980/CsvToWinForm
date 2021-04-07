@@ -10,48 +10,68 @@ namespace CsvToWinForm
 {
     public partial class Form1 : Form
     {
-        private int tcntExceedTemp;
+        //private int tcntExceedTemp;
 
         public Form1()
         {
             InitializeComponent();
         }
-
-        // import file csv already browse
-        private void btnImport_click_Click(object sender, EventArgs e)
-        {
-            dataGridView1.DataSource = LoadCSV(textBox1.Text);          
-        }
-
-        // gain values of csv
-        public List<ColumnsClass> LoadCSV(string csvFile)
-        {
-            var query = from l in File.ReadLines(csvFile)
-                        let data = l.Split(';')
-                        select new ColumnsClass
-                        {
-                            Zone1 = int.Parse(data[0]),
-                            Zone2 = int.Parse(data[1]),
-                            Zone3 = int.Parse(data[2]),
-                            Zone4 = int.Parse(data[3]),
-                            Zone5 = int.Parse(data[4]),
-                            Zone6 = int.Parse(data[5]),
-                            Zone7 = int.Parse(data[6]),
-                            Zone8 = int.Parse(data[7]),
-                            MediaTemperature = double.Parse(data[8]),
-                            ControlloTemperature = data[9]
-                        };
-            return query.ToList();
-        }
-
         // browse for the file which have to be a .CSV file
         private void btnBrowse_Click(object sender, EventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();
-            dlg.Filter = "CSVFile(*.csv)|*.csv";          
+            dlg.Filter = "CSVFile(*.csv)|*.csv";
             dlg.ShowDialog();
             textBox1.Text = dlg.FileName;
         }
+
+        // import file csv already browse
+        private void btnImport_click_Click(object sender, EventArgs e)
+        {
+            //dataGridView1.DataSource = LoadCSV(textBox1.Text);
+            LoadCSV(textBox1.Text);
+        }
+        private void LoadCSV(string filePath )
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                string[] lines = File.ReadAllLines(filePath);
+
+                if (lines.Length > 0)
+                {
+                    //first line to create header
+                    string firstLine = lines[0];
+                    string[] headerLable = firstLine.Split(';');
+                    foreach (string headerWord in headerLable)
+                    {
+                        dt.Columns.Add(new DataColumn(headerWord));
+                    }
+                    //for data
+                    for (int i = 1; i < lines.Length; i++)
+                    {
+                        string[] dataWords = lines[i].Split(';');
+                        DataRow dr = dt.NewRow();
+                        int columnIndex = 0;
+                        foreach (string headerWord in headerLable)
+                        {
+                            dr[headerWord] = dataWords[columnIndex++];
+                        }
+                        dt.Rows.Add(dr);
+                    }
+                }
+                if (dt.Rows.Count > 0)
+                {
+                    dataGridView1.DataSource = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                var v = ex.ToString();
+            }
+        }
+
+    
 
         // export again the file on a .csv file
         private void btnExport_Click(object sender, EventArgs e)
@@ -82,12 +102,10 @@ namespace CsvToWinForm
                             }
                             // break if null
                         }
-                        //add new line
-                        csv += "\r\n";
+                        csv += "\r\n";        //add new line
                     }
-                    //define the path, where we will put the file
-                    string folderPath = "C:\\CSV_FORM\\";
-                    
+                    string folderPath = "C:\\CSV_FORM\\";        //define the path, where we will put the file
+
                     File.WriteAllText(folderPath + "ExportedTemp.csv", csv);
                     MessageBox.Show("export done");
                 }
@@ -101,8 +119,9 @@ namespace CsvToWinForm
         // insert new record(temperature) , save into the source 
         private void btnSaveRec_Click(object sender, EventArgs e)
         {
+           
             string allData = "";
-            using (StreamReader reader = new StreamReader(@"C:\CSV_FORM\template_noHeader.csv"))
+            using (StreamReader reader = new StreamReader(@"C:\CSV_FORM\ExportedTemp.csv"))
             {
                 string line;
                 // Read line by line  
@@ -112,7 +131,8 @@ namespace CsvToWinForm
                 }
             }
 
-            String newRecord = textBox2.Text+";"+textBox3.Text+";"+textBox4.Text+";"+textBox5.Text+";"+textBox6.Text+";"+textBox7.Text+";"+textBox8.Text+";"+textBox9.Text+";"+textBox10.Text+";";
+            String newRecord = textBox2.Text+";"+textBox3.Text+";"+textBox4.Text+";"+textBox5.Text+";"+
+                textBox6.Text+";"+textBox7.Text+";"+textBox8.Text+";"+textBox9.Text+";"+textBox10.Text+";";
            
             string radioV = "";
             bool isChecked = radioBtn1.Checked;
@@ -121,19 +141,19 @@ namespace CsvToWinForm
             else
                 radioV = radioBtn2.Text;
 
-            // check if the exceed tem has value more than 4
-            if (tcntExceedTemp > 4)
-            {
-                radioV = radioBtn2.Text;
-            }
-                radioV = radioBtn1.Text;
+            //// check if the exceed tem has value more than 4
+            //if (tcntExceedTemp > 4)
+            //{
+            //    radioV = radioBtn2.Text;
+            //}
+            //    radioV = radioBtn1.Text;
 
             allData += newRecord;
             allData += radioV;
 
            
 
-            StreamWriter file = new StreamWriter(@"C:\CSV_FORM\template_noHeader.csv");
+            StreamWriter file = new StreamWriter(@"C:\CSV_FORM\ExportedTemp.csv");
             file.WriteLine(allData);
             file.Close();
             dataGridView1.Update();          // refresh the datagrid
@@ -141,7 +161,7 @@ namespace CsvToWinForm
         }
 
         // control the input of new inserted value for temperature
-        private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
+        private void textBox_KeyPress(object sender, KeyPressEventArgs e)
         { 
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
             {
@@ -151,7 +171,8 @@ namespace CsvToWinForm
 
         }
 
-        private void textBox2_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        // control the value inserted should be between 90 & 120
+        private void textBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
             int cntExceedTemp = 0;
             TextBox tb = sender as TextBox;
@@ -166,28 +187,11 @@ namespace CsvToWinForm
             }
             MessageBox.Show("Temperture non è in range definito, sei sicuro di voler confermare?");
             cntExceedTemp += 1;    // check the time of exceed temp- every the temp is more than range add 1 to count 
+         
         }
 
-        // control the value inserted should be between 90 & 120
-
-        //private void checkValueTemp_TextChanged(object sender, EventArgs e)
-        //{
-        //    int value;
-
-        //    if (int.TryParse(textBox2.Text, out value))
-        //    {
-        //        if ((value < 90 || value > 120))
-        //        {
-        //            MessageBox.Show("Temperture non è in range definito, sei sicuro di confermare! ");
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("");
-        //        }
-
-        //    }
-        //}
+ 
     }
-
 }
+
 

@@ -384,7 +384,7 @@ namespace CsvToWinForm
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(179, 26);
             this.textBox10.TabIndex = 12;
-            this.textBox10.Validating += new System.ComponentModel.CancelEventHandler(this.textBox2_Validating);
+            this.textBox10.Validating += new System.ComponentModel.CancelEventHandler(this.textBox_Validating);
             // 
             // textBox9
             // 
@@ -392,8 +392,8 @@ namespace CsvToWinForm
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(100, 26);
             this.textBox9.TabIndex = 11;
-            this.textBox9.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
-            this.textBox9.Validating += new System.ComponentModel.CancelEventHandler(this.textBox2_Validating);
+            this.textBox9.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
+            this.textBox9.Validating += new System.ComponentModel.CancelEventHandler(this.textBox_Validating);
             // 
             // textBox8
             // 
@@ -401,8 +401,8 @@ namespace CsvToWinForm
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(100, 26);
             this.textBox8.TabIndex = 10;
-            this.textBox8.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
-            this.textBox8.Validating += new System.ComponentModel.CancelEventHandler(this.textBox2_Validating);
+            this.textBox8.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
+            this.textBox8.Validating += new System.ComponentModel.CancelEventHandler(this.textBox_Validating);
             // 
             // textBox7
             // 
@@ -410,8 +410,8 @@ namespace CsvToWinForm
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(100, 26);
             this.textBox7.TabIndex = 9;
-            this.textBox7.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
-            this.textBox7.Validating += new System.ComponentModel.CancelEventHandler(this.textBox2_Validating);
+            this.textBox7.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
+            this.textBox7.Validating += new System.ComponentModel.CancelEventHandler(this.textBox_Validating);
             // 
             // textBox6
             // 
@@ -419,8 +419,8 @@ namespace CsvToWinForm
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(100, 26);
             this.textBox6.TabIndex = 8;
-            this.textBox6.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
-            this.textBox6.Validating += new System.ComponentModel.CancelEventHandler(this.textBox2_Validating);
+            this.textBox6.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
+            this.textBox6.Validating += new System.ComponentModel.CancelEventHandler(this.textBox_Validating);
             // 
             // textBox5
             // 
@@ -428,8 +428,8 @@ namespace CsvToWinForm
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(100, 26);
             this.textBox5.TabIndex = 7;
-            this.textBox5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
-            this.textBox5.Validating += new System.ComponentModel.CancelEventHandler(this.textBox2_Validating);
+            this.textBox5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
+            this.textBox5.Validating += new System.ComponentModel.CancelEventHandler(this.textBox_Validating);
             // 
             // textBox4
             // 
@@ -437,8 +437,8 @@ namespace CsvToWinForm
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(100, 26);
             this.textBox4.TabIndex = 6;
-            this.textBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
-            this.textBox4.Validating += new System.ComponentModel.CancelEventHandler(this.textBox2_Validating);
+            this.textBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
+            this.textBox4.Validating += new System.ComponentModel.CancelEventHandler(this.textBox_Validating);
             // 
             // textBox3
             // 
@@ -446,8 +446,8 @@ namespace CsvToWinForm
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(100, 26);
             this.textBox3.TabIndex = 5;
-            this.textBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
-            this.textBox3.Validating += new System.ComponentModel.CancelEventHandler(this.textBox2_Validating);
+            this.textBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
+            this.textBox3.Validating += new System.ComponentModel.CancelEventHandler(this.textBox_Validating);
             // 
             // label3
             // 
@@ -477,8 +477,8 @@ namespace CsvToWinForm
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 26);
             this.textBox2.TabIndex = 2;
-            this.textBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
-            this.textBox2.Validating += new System.ComponentModel.CancelEventHandler(this.textBox2_Validating);
+            this.textBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
+            this.textBox2.Validating += new System.ComponentModel.CancelEventHandler(this.textBox_Validating);
             // 
             // label1
             // 
